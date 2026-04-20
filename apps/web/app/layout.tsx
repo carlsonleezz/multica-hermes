@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Inter, Geist_Mono } from "next/font/google";
+import type { CSSProperties } from "react";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "@multica/ui/components/ui/sonner";
 import { cn } from "@multica/ui/lib/utils";
@@ -17,28 +17,25 @@ import "./globals.css";
 // the tail with Hiragino Kaku Gothic ProN / Yu Gothic / Apple SD Gothic Neo / Malgun Gothic.
 // Per-character fallback: Latin chars render with Inter, Chinese chars with
 // PingFang SC (macOS) / Microsoft YaHei (Windows) / Noto Sans CJK SC (Linux).
-const inter = Inter({
-  subsets: ["latin"],
-  variable: "--font-sans",
-  fallback: [
+const fontVariables = {
+  "--font-sans": [
     "-apple-system",
     "BlinkMacSystemFont",
-    "Segoe UI",
-    "PingFang SC",
-    "Microsoft YaHei",
-    "Noto Sans CJK SC",
+    '"Segoe UI"',
+    "Inter",
+    '"PingFang SC"',
+    '"Microsoft YaHei"',
+    '"Noto Sans CJK SC"',
     "sans-serif",
-  ],
-});
-// Mono font has no explicit CJK fallback: CJK chars in code blocks are inherently
-// non-aligned with a mono grid (Chinese is proportional), so listing CJK fonts
-// here would falsely signal alignment guarantees. Browser default fallback handles
-// the rare mixed case correctly.
-const geistMono = Geist_Mono({
-  subsets: ["latin"],
-  variable: "--font-mono",
-  fallback: ["ui-monospace", "SFMono-Regular", "Menlo", "Consolas", "monospace"],
-});
+  ].join(", "),
+  "--font-mono": [
+    "ui-monospace",
+    '"SFMono-Regular"',
+    "Menlo",
+    "Consolas",
+    "monospace",
+  ].join(", "),
+} as CSSProperties;
 
 export const viewport: Viewport = {
   width: "device-width",
@@ -89,7 +86,8 @@ export default function RootLayout({
     <html
       lang="en"
       suppressHydrationWarning
-      className={cn("antialiased font-sans h-full", inter.variable, geistMono.variable)}
+      className={cn("antialiased font-sans h-full")}
+      style={fontVariables}
     >
       <body className="h-full overflow-hidden">
         <LocaleSync />

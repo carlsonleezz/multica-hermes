@@ -1,5 +1,5 @@
 # --- Build stage ---
-FROM golang:1.26-alpine AS builder
+FROM docker.m.daocloud.io/library/golang:1.26-alpine AS builder
 
 RUN apk add --no-cache git
 
@@ -20,7 +20,7 @@ RUN cd server && CGO_ENABLED=0 go build -ldflags "-s -w -X main.version=${VERSIO
 RUN cd server && CGO_ENABLED=0 go build -ldflags "-s -w" -o bin/migrate ./cmd/migrate
 
 # --- Runtime stage ---
-FROM alpine:3.21
+FROM docker.m.daocloud.io/library/alpine:3.21
 
 RUN apk add --no-cache ca-certificates tzdata
 
